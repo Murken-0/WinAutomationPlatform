@@ -1,30 +1,29 @@
-﻿using System;
+﻿using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Windows;
-using OpenQA.Selenium.Remote;
+using CSScriptLib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CSScriptLibrary;
-using System.IO;
 
-namespace UIRecorderTemplate
+namespace Template
 {
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			DesktopSession desktopSession = new DesktopSession("http://localhost:4723/");
-			System.Threading.Thread.Sleep(2000);
+			DesktopSession desktopSession = new DesktopSession("http://192.168.0.128:4723/wd/hub");
+			Thread.Sleep(2000);
 
 			bool bSuccess = false;
 
-			var path = @"D:\Script.txt";
+			var path = @"D:\Script.cs";
 
 			try
 			{
 				var code = File.ReadAllText(path);
 
+
 				dynamic script = CSScript.Evaluator
-					.ReferenceDomainAssemblies()
-					.LoadMethod(code);
+					.LoadCode<IScript>(code);
+
 				script.Perform(desktopSession);
 
 				bSuccess = true;
@@ -36,16 +35,22 @@ namespace UIRecorderTemplate
 		}
 	}
 
-	public class DesktopSession
+    public interface IScript
+    {
+       public void Perform(DesktopSession desktopSession);
+    }
+
+    public class DesktopSession
 	{
 		WindowsDriver<WindowsElement> desktopSession;
 
 		public DesktopSession(string uri)
 		{
-			DesiredCapabilities appCapabilities = new DesiredCapabilities();
-			appCapabilities.SetCapability("app", "Root");
-			appCapabilities.SetCapability("deviceName", "WindowsPC");
-			desktopSession = new WindowsDriver<WindowsElement>(new Uri(uri), appCapabilities);
+			var options = new AppiumOptions();
+			options.AddAdditionalCapability("app", "Root");
+			options.AddAdditionalCapability("deviceName", "WindowsPC");
+			desktopSession = new WindowsDriver<WindowsElement>(new Uri(uri), options);
+			desktopSession.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(500);
 		}
 
 		~DesktopSession()
@@ -78,7 +83,7 @@ namespace UIRecorderTemplate
 				}
 				else
 				{
-					System.Threading.Thread.Sleep(2000);
+					Thread.Sleep(2000);
 				}
 			}
 

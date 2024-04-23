@@ -273,7 +273,7 @@ namespace WinAppDriverUIRecorder
                 "}\n" +
                 "else\n" +
                 "{\n" +
-                "    Console.WriteLine($\"Failed to find element using xpath: {" + $"{xpath}" + "}\");\n" +
+                "    Console.WriteLine(\"Failed to find element using xpath: \" + " + $"{xpath}" + ");\n" +
                 "    return;\n" +
                 "}\n";
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WorkflowCore.Interface;
 using Steps;
+using WorkflowCore.Services.DefinitionStorage;
 
 namespace Runner.Api.Controllers
 {
@@ -17,16 +18,16 @@ namespace Runner.Api.Controllers
 		}
 
 		[Route("workflows/execute")]
-		public ActionResult<string> Execute()//[FromBody] string workflowYaml
+		public async Task<ActionResult<string>> Execute([FromBody] string workflowYaml)
 		{
+			var workflow = _loader.LoadDefinition(workflowYaml, Deserializers.Yaml); 
 
-			//var workflow = _loader.LoadDefinition(workflowYaml, Deserializers.Yaml);
-			_workflowHost.RegisterWorkflow<TestWorkflow, ExecuteScriptData>();
-			_workflowHost.Start();
-			_workflowHost.StartWorkflow("Test", 1);
-			//_workflowHost.Stop();
+			var result = await _workflowHost.StartWorkflow(
+				workflow.Id, 
+				workflow.Version, 
+				new ExecuteScriptData() { Script = System.IO.File.ReadAllText(@"D:\Script.cs") });
 
-			return Ok();
+			return Ok(result);
 		}
 	}
 }

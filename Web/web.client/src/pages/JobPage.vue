@@ -3,7 +3,7 @@
 		<h1>Задачи</h1>
 		<div class="tasks__btns">
 			<my-button
-				@click="showDialog">
+				@click="createTask">
 				Создать задачу
 			</my-button>
 
@@ -22,9 +22,9 @@
 		</my-dialog>
 		<task-list
 			v-if="!isTasksLoading"
-			:tasks="sortedTasks"
+			:jobs="sortedTasks"
 			style="margin-top: 20px"
-			@deleteTask="deleteTask"
+			@deleteTask="deleteJob"
 		/>
 		<div v-else>Загружаем</div>
 	</div>
@@ -32,9 +32,9 @@
 
 <script>
 import axios from "axios";
-import TaskList from "@/components/task/TaskList.vue";
-import TaskCreateForm from "@/components/task/TaskCreateForm.vue";
-import TaskEditForm from "@/components/task/TaskEditForm.vue";
+import TaskList from "@/components/job/JobList.vue";
+import TaskCreateForm from "@/components/job/JobCreateForm.vue";
+import TaskEditForm from "@/components/job/JobEditForm.vue";
 
 export default {
 	components: {TaskCreateForm, TaskEditForm, TaskList},
@@ -87,7 +87,7 @@ export default {
 		showCreateDialog() {
 			this.createVisible = true;
 		},
-		async createTask(task) {
+		async createTask() {
 			this.createVisible = false;
 			//await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
 			await this.fetchWorkflows()
@@ -97,7 +97,7 @@ export default {
 			//await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
 			await this.fetchWorkflows()
 		},
-		async deleteTask(task) {
+		async deleteJob(task) {
 			//await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
 			await this.fetchWorkflows()
 		},

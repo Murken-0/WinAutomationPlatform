@@ -37,7 +37,7 @@ export default {
 			this.$emit('createWorkflow', this.workflow)
 			this.workflow = {
 				name: '',
-				schema: ''
+				scheme: ''
 			}
 		},
 		openStudio() {

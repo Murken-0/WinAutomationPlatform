@@ -3,7 +3,7 @@
 		<h3>Список задач</h3>
 		<task-item
 			v-for="task in tasks"
-			:task="task"
+			:job="task"
 			:key="task.id"
 			@deleteTask="$emit('deleteTask', task)"
 			@editTask="$emit('editTask', task)"/>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import TaskItem from "@/components/task/TaskItem.vue";
+import TaskItem from "@/components/job/JobItem.vue";
 
 export default {
 	components: {TaskItem},

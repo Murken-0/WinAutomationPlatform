@@ -1,19 +1,21 @@
 <template>
 	<div class="navbar">
-		<div class="content">
-			<div @click="$router.push('/')" class="navbar__brand">
-				<div>Платформа</div>
-				<div>роботизации</div></div>
-			<div class="navbar__btns">
-				<my-button style="margin-left: 15px" @click="$router.push('/workflows/')">Процессы</my-button>
-				<my-button style="margin-left: 15px" @click="$router.push('/tasks/')">Задачи</my-button>
-			</div>
+		<my-button @click="$router.push('/')">
+			<div>Платформа</div>
+			<div>роботизации</div>
+		</my-button>
+		<div class="navbar__btns">
+			<my-button style="margin-left: 15px" @click="$router.push('/workflows/')">Процессы</my-button>
+			<my-button style="margin-left: 15px" @click="$router.push('/tasks/')">Задачи</my-button>
 		</div>
 	</div>
 </template>
 
 <script>
+import MyButton from "@/components/UI/MyButton.vue";
+
 export default {
+	components: {MyButton}
 
 }
 </script>
@@ -25,27 +27,11 @@ export default {
 	box-shadow: 0px 1px 3px gray;
 	display: flex;
 	align-items: center;
-	border-radius: 10px;
-}
-
-.navbar__brand {
-	display: flex;
-	flex-direction: column;
-	border: 1px solid teal;
-	border-radius: 5px;
-	padding: 7px;
+	padding: 0px 20px;
 }
 
 .navbar__btns {
 	margin-left: auto;
-}
-
-.content {
-	width: 900px;
-	margin: 0 auto;
-	display: flex;
-	align-items: center;
-	padding: 0 15px;
 }
 
 </style>

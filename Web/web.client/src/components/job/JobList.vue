@@ -1,12 +1,12 @@
 <template>
-	<div v-if="tasks.length > 0">
+	<div v-if="jobs.length > 0">
 		<h3>Список задач</h3>
-		<task-item
-			v-for="task in tasks"
-			:job="task"
-			:key="task.id"
-			@deleteTask="$emit('deleteTask', task)"
-			@editTask="$emit('editTask', task)"/>
+		<job-item
+			v-for="job in jobs"
+			:job="job"
+			:key="job.id"
+			@deleteJob="$emit('deleteJob', job)"
+			@editJob="$emit('editJob', job)"/>
 	</div>
 	<h2
 		v-else
@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import TaskItem from "@/components/job/JobItem.vue";
+import JobItem from "@/components/job/JobItem.vue";
 
 export default {
-	components: {TaskItem},
+	components: {JobItem},
 	props: {
-		tasks: {
+		jobs: {
 			type: Array,
 			required: true,
 		}

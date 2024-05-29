@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Steps.Other
+namespace Core.Common
 {
 	public class DesktopSession : IDisposable
 	{
@@ -18,7 +18,7 @@ namespace Steps.Other
 			options.AddAdditionalCapability("app", "Root");
 			options.AddAdditionalCapability("deviceName", "WindowsPC");
 			_session = new WindowsDriver<WindowsElement>(new Uri(uri), options);
-			_session.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(500);
+			_session.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(200);
 		}
 
 		public WindowsDriver<WindowsElement> DesktopSessionElement
@@ -26,10 +26,7 @@ namespace Steps.Other
 			get { return _session; }
 		}
 
-		public void Dispose()
-		{
-			_session.Quit();
-		}
+		public void Dispose() => _session.Quit();
 
 		public WindowsElement FindElementByAbsoluteXPath(string xPath, int nTryCount = 10)
 		{

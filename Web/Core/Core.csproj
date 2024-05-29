@@ -3,13 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Appium.WebDriver" Version="4.4.5" />
-    <PackageReference Include="CS-Script" Version="4.8.14" />
-    <PackageReference Include="WorkflowCore" Version="3.10.0" />
+    <PackageReference Include="CS-Script" Version="4.8.16" />
   </ItemGroup>
 
 </Project>

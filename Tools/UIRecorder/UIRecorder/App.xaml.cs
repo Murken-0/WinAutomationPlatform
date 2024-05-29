@@ -16,8 +16,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using Microsoft.ApplicationInsights;
+using Microsoft.Win32;
 
 namespace WinAppDriverUIRecorder
 {
@@ -85,7 +87,9 @@ namespace WinAppDriverUIRecorder
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            NativeMethods.SetProcessDPIAware();
+            RegisterProtocol();
+
+			NativeMethods.SetProcessDPIAware();
             AppInsights.InitAppSights();
             NativeMethods.InitUiTreeWalk();
         }
@@ -97,5 +101,24 @@ namespace WinAppDriverUIRecorder
             base.OnExit(e);
             Environment.Exit(0);
         }
-    }
+
+		private void RegisterProtocol()
+		{
+			var applicationPath = Process.GetCurrentProcess().MainModule.FileName;
+			string customProtocol = "recorder";
+			RegistryKey key = Registry.ClassesRoot.OpenSubKey(customProtocol);
+
+			if (key == null)
+			{
+				key = Registry.ClassesRoot.CreateSubKey(customProtocol);
+				key.SetValue(string.Empty, "URL: " + customProtocol);
+				key.SetValue("URL Protocol", string.Empty);
+
+				key = key.CreateSubKey(@"shell\open\command");
+				key.SetValue(string.Empty, applicationPath + " " + "%1");
+			}
+
+			key.Close();
+		}
+	}
 }

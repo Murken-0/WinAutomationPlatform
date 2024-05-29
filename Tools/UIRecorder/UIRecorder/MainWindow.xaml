@@ -9,7 +9,7 @@
         Closed="Window_Closed"
         MouseEnter="Window_MouseEnter"
         MouseLeave="Window_MouseLeave"
-        Title="WAD UIRecorder" Height="500" Width="330">
+        Title="WAD UIRecorder" Height="500" Width="530">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
@@ -139,6 +139,7 @@
         <ColumnDefinition Width="75" />
         <ColumnDefinition Width="75" />
         <ColumnDefinition Width="75" />
+        <ColumnDefinition Width="75" />
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
 
@@ -180,8 +181,21 @@
           </ToggleButton.Template>
         </ToggleButton>
       </Grid>
-      
-      <Grid Grid.Column="3"  Background="White" Name="gridTextRecording">
+
+      <Grid Grid.Column="3">
+        <ToggleButton Content="Copy" Name="btnCopy" Click="btnCopy_Click" IsThreeState="False" Margin="1,1,1,1"
+            ToolTip="Copy all C# code to clipboard">
+          <ToggleButton.Template>
+            <ControlTemplate TargetType="{x:Type ToggleButton}">
+              <Border CornerRadius="3" Background="{TemplateBinding Background}">
+                <ContentPresenter Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+              </Border>
+            </ControlTemplate>
+          </ToggleButton.Template>
+        </ToggleButton>
+      </Grid>
+
+      <Grid Grid.Column="4"  Background="White" Name="gridTextRecording">
         <TextBlock Name="textBoxRecording" HorizontalAlignment="Center" VerticalAlignment="Center" Text="" FontWeight="Bold" Margin="0,0,0,0"/>
       </Grid>
     </Grid>

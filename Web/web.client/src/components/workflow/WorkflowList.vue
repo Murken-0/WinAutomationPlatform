@@ -5,8 +5,8 @@
 			v-for="workflow in workflows"
 			:workflow="workflow"
 			:key="workflow.id"
-			@editWorkflow="$emit('editWorkflow', workflow)"
-			@deleteWorkflow="$emit('deleteWorkflow', workflow)"/>
+			@editWorkflow="editWorkflow"
+			@deleteWorkflow="deleteWorkflow"/>
 	</div>
 	<h2
 		v-else
@@ -26,6 +26,14 @@ export default {
 			required: true,
 		}
 	},
+	methods: {
+		editWorkflow(workflow) {
+			this.$emit('editWorkflow', workflow)
+		},
+		deleteWorkflow(workflow) {
+			this.$emit('deleteWorkflow', workflow)
+		}
+	}
 }
 </script>
 <style scoped>

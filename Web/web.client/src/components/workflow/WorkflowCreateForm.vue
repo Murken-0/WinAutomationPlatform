@@ -5,14 +5,9 @@
 			v-model="workflow.name"
 			type="text"
 			placeholder="Название"
+			class="form__input"
 		/>
 		<div class="form__btns">
-			<my-button
-				@click="openStudio"
-			>
-				Открыть студию
-			</my-button>
-
 			<my-button
 				@click="createWorkflow"
 			>
@@ -28,16 +23,22 @@ export default {
 		return {
 			workflow: {
 				name: '',
-				schema: '',
+				lastEdit: '',
+				version: '',
+				scheme: ''
 			}
 		}
 	},
 	methods: {
 		createWorkflow() {
+			this.workflow.lastEdit = new Date(Date.now()).toISOString();
+			this.workflow.version = 0;
 			this.$emit('createWorkflow', this.workflow)
 			this.workflow = {
 				name: '',
-				schema: ''
+				lastEdit: '',
+				version: '',
+				scheme: '',
 			}
 		},
 		openStudio() {
@@ -57,7 +58,11 @@ form {
 	display: flex;
 	align-items: center;
 	margin-top: 15px;
-	justify-content: space-between;
+	justify-content: flex-end;
+}
+
+.form__input {
+	margin-top: 10px;
 }
 
 </style>

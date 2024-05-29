@@ -2,7 +2,7 @@
 	<form @submit.prevent>
 		<h4>Создать задачу</h4>
 		<my-input
-			v-model="workflow.name"
+			v-model="job.name"
 			type="text"
 			placeholder="Название"
 		/>
@@ -14,7 +14,7 @@
 			</my-button>
 
 			<my-button
-				@click="createWorkflow"
+				@click="createJob"
 			>
 				Создать
 			</my-button>
@@ -26,23 +26,20 @@
 export default {
 	data() {
 		return {
-			workflow: {
+			job: {
 				name: '',
 				schema: '',
 			}
 		}
 	},
 	methods: {
-		createWorkflow() {
-			this.$emit('createWorkflow', this.workflow)
-			this.workflow = {
+		createJob() {
+			this.$emit('createWorkflow', this.job)
+			this.job = {
 				name: '',
 				scheme: ''
 			}
-		},
-		openStudio() {
-			this.$emit('openStudio', this.workflow)
-		},
+		}
 	},
 }
 </script>

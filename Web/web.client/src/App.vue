@@ -10,7 +10,6 @@ import NavigationBar from "@/components/UI/NavigationBar.vue";
 
 export default {
 	components: {NavigationBar}
-
 }
 </script>
 
@@ -23,7 +22,6 @@ export default {
 
 .app {
 	padding: 20px;
-	width: 900px;
 	margin: 0 auto;
 }
 </style>

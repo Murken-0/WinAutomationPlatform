@@ -31,6 +31,8 @@ export default {
 
 <style scoped>
 .sort__select {
+	padding: 8px 0px 8px 8px;
 	border-radius: 5px;
+	border: 2px solid teal;
 }
 </style>

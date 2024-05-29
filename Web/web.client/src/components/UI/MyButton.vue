@@ -13,10 +13,9 @@ export default {
 
 <style scoped>
 .button {
-	padding: 10px 15px;
+	padding: 8px 15px;
 	background: none;
-	color: teal;
-	border: 1px solid teal;
+	border: 2px solid teal;
 	border-radius: 5px;
 }
 </style>

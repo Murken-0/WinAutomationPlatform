@@ -3,7 +3,7 @@
 		<h1>Рабочие процессы</h1>
 		<div class="workflow__btns">
 			<my-button
-				@click="showCreateDialog">
+				@click="this.createVisible = true">
 				Создать рабочий процесс
 			</my-button>
 
@@ -14,7 +14,11 @@
 		</div>
 		<my-dialog
 			v-model:show="editVisible">
-			<workflow-edit-form @editWorkflow="editWorkflow"/>
+			<workflow-edit-form
+				:wf="selectedWorkflow"
+				@save="editWorkflow"
+				@changeScript="openStudio"
+			/>
 		</my-dialog>
 		<my-dialog
 			v-model:show="createVisible">
@@ -25,7 +29,7 @@
 			:workflows="sortedWorkflows"
 			style="margin-top: 20px"
 			@deleteWorkflow="deleteWorkflow"
-			@editWorkflow="showEditDialog"
+			@editWorkflow="showEditForm"
 		/>
 		<div v-else>Загружаем</div>
 	</div>
@@ -35,31 +39,13 @@
 import WorkflowList from "@/components/workflow/WorkflowList.vue";
 import WorkflowCreateForm from "@/components/workflow/WorkflowCreateForm.vue";
 import WorkflowEditForm from "@/components/workflow/WorkflowEditForm.vue";
+import axios from "axios";
 
 export default {
 	components: {WorkflowList, WorkflowCreateForm, WorkflowEditForm},
 	data() {
 		return {
-			workflows: [
-				{
-					id: 1,
-					name: "Сасный WF",
-					lastEdit: new Date().toLocaleString(),
-					scheme: "",
-				},
-				{
-					id: 2,
-					name: " WF",
-					lastEdit: new Date().toLocaleString(),
-					scheme: "",
-				},
-				{
-					id: 3,
-					name: "Сасный WF",
-					lastEdit: new Date(1).toLocaleString(),
-					scheme: "",
-				},
-			],
+			workflows: [],
 			createVisible: false,
 			editVisible: false,
 			isWorkflowsLoading: false,
@@ -67,41 +53,43 @@ export default {
 			sortOptions: [
 				{value: "name", name: "Название"},
 				{value: "lastEdit", name: "Дата изменения"},
-			]
+			],
+			selectedWorkflow: {},
 		}
 	},
 	methods: {
-		showCreateDialog() {
-			this.createVisible = true;
+		showEditForm(workflow) {
+			this.selectedWorkflow = workflow;
+			this.editVisible = true;
 		},
-		showEditDialog() {
-			this.createVisible = true;
+		async openStudio(workflow) {
+			this.$router.push(`/studio/${workflow.id}`);
 		},
-		async createWorkflow() {
+		async createWorkflow(workflow) {
 			this.createVisible = false;
-			//await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+			await axios.post('/api/Workflows/Create', workflow);
 			await this.fetchWorkflows();
 		},
-		async editWorkflow() {
+		async editWorkflow(workflow) {
 			this.editVisible = false;
-			//await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+			await axios.put(`/api/Workflows/Update/${workflow.id}`, workflow);
 			await this.fetchWorkflows()
 		},
-		async deleteWorkflow() {
-			//await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+		async deleteWorkflow(workflow) {
+			console.log(workflow);
+			await axios.delete(`/api/Workflows/Delete/${workflow.id}`);
 			await this.fetchWorkflows()
 		},
 		async fetchWorkflows() {
 			try {
 				this.isWorkflowsLoading = true;
-				//const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
-				//this.posts = response.data;
+				const response = await axios.get('/api/Workflows/GetAll');
+				this.workflows = response.data;
 			} catch (e) {
 				alert(`An error occurred: ${e}`);
+				console.log(e);
 			} finally {
 				this.isWorkflowsLoading = false;
-				let updatedSort = this.selectedSort;
-				this.selectedSort = updatedSort;
 			}
 		},
 	},
@@ -111,19 +99,15 @@ export default {
 	watch: {
 		createVisible(newValue) {
 			if (newValue) {
-				// Блокировка прокрутки страницы
 				document.body.style.overflow = 'hidden';
 			} else {
-				// Разблокировка прокрутки страницы
 				document.body.style.overflow = 'auto';
 			}
 		},
 		editVisible(newValue) {
 			if (newValue) {
-				// Блокировка прокрутки страницы
 				document.body.style.overflow = 'hidden';
 			} else {
-				// Разблокировка прокрутки страницы
 				document.body.style.overflow = 'auto';
 			}
 		},

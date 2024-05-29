@@ -23,6 +23,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WinAppDriverUIRecorder
 {
@@ -48,7 +49,7 @@ namespace WinAppDriverUIRecorder
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			s_windowHandle = new System.Windows.Interop.WindowInteropHelper(Application.Current.MainWindow).Handle;
+			s_windowHandle = new System.Windows.Interop.WindowInteropHelper(System.Windows.Application.Current.MainWindow).Handle;
 			System.Windows.Interop.HwndSource.FromHwnd(s_windowHandle).AddHook(RunOnUiThread);
 
 			s_mainWin = this;
@@ -223,6 +224,44 @@ namespace WinAppDriverUIRecorder
 			}
 
 			AppInsights.LogEvent("Recorded UI Count", $"{RecordedUiTask.s_listRecordedUi.Count}");
+		}
+
+		private void btnCopy_Click(object sender, RoutedEventArgs e)
+		{
+			StringBuilder sb = new StringBuilder();
+
+			lock (RecordedUiTask.s_lockRecordedUi)
+			{
+				if (RecordedUiTask.s_listRecordedUi.Count == 0)
+				{
+					return;
+				}
+
+				// Stop recording
+				if (btnRecord.IsChecked == true)
+				{
+					btnRecord_Click(null, null);
+				}
+
+				string focusedLeftElementName = "";
+				foreach (var uiTask in RecordedUiTask.s_listRecordedUi)
+				{
+					if (uiTask.UiTaskName != EnumUiTaskName.Inspect)
+					{
+						if (uiTask.UiTaskName == EnumUiTaskName.LeftClick)
+						{
+							focusedLeftElementName = uiTask.VariableName;
+						}
+
+						sb.AppendLine(uiTask.GetCSCode(focusedLeftElementName));
+					}
+				}
+			}
+
+			if (sb.Length > 0)
+			{
+				Clipboard.SetText(sb.ToString());
+			}
 		}
 
 		public static void UpdateLastUi(RecordedUiTask uiTask)
@@ -921,5 +960,5 @@ namespace WinAppDriverUIRecorder
 		{
 			AppInsights.LogEvent("ComboBoxRecordedUi_PreviewMouseLeftButtonDown");
 		}
-	}
+    }
 }

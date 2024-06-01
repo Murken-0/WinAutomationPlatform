@@ -10,7 +10,6 @@ namespace WinAppDriverUIRecorder
         {
             if (string.IsNullOrEmpty(strLeafToRoot))
             {
-                AppInsights.LogException("GetRootToLeafNodes", "strLeafToRoot is null");
                 return null;
             }
 
@@ -34,7 +33,6 @@ namespace WinAppDriverUIRecorder
         {
             if (string.IsNullOrEmpty(strBase64))
             {
-                AppInsights.LogException("AddKeyboardInputTask", "strBase64 is null");
                 return;
             }
 
@@ -138,8 +136,6 @@ namespace WinAppDriverUIRecorder
             }
 
             NativeMethods.PostMessage(MainWindow.s_windowHandle, (int)MainWindow.UiThreadTask.ActionAdded, 0, 0);
-
-            AppInsights.LogEvent("HandleUiEvent", uiTaskName.ToString());
         }
     }
 }

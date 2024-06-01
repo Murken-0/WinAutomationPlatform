@@ -1,9 +1,11 @@
 <template>
 	<div class="navbar">
-		<my-button @click="$router.push('/')">
-			<div>Платформа</div>
-			<div>роботизации</div>
-		</my-button>
+		<div
+			class="navbar__brand"
+			@click="$router.push('/workflows')">
+			<div><strong>Платформа</strong></div>
+			<div><strong>роботизации</strong></div>
+		</div>
 		<div class="navbar__btns">
 			<my-button style="margin-left: 15px" @click="$router.push('/workflows/')">Процессы</my-button>
 			<my-button style="margin-left: 15px" @click="$router.push('/tasks/')">Задачи</my-button>
@@ -24,10 +26,21 @@ export default {
 .navbar {
 	height: 70px;
 	background-color: lightgray;
-	box-shadow: 0px 1px 3px gray;
+	box-shadow: 0 1px 3px gray;
 	display: flex;
 	align-items: center;
-	padding: 0px 20px;
+	padding: 0 20px;
+}
+
+.navbar__brand {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: 20px;
+	border: 2px solid teal;
+	border-radius: 5px;
+	padding: 3px 10px;
+	cursor: pointer;
 }
 
 .navbar__btns {

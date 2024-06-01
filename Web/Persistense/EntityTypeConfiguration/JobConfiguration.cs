@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Core.Models;
+using Domain;
 
 namespace Persistense.EntityTypeConfiguration;
 

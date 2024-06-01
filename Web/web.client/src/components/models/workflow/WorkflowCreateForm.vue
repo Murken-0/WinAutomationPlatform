@@ -28,7 +28,7 @@ export default {
 	},
 	methods: {
 		createWorkflow() {
-			this.$emit('createWorkflow', this.workflow)
+			this.$emit('create', this.workflow)
 			this.workflow = {
 				name: '',
 			}

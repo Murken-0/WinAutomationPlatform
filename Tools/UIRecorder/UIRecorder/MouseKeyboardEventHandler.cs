@@ -127,7 +127,6 @@ namespace WinAppDriverUIRecorder
                         var tick = Environment.TickCount;
 
                         NativeMethods.GetUiXPath(ptUiWalking.X, ptUiWalking.Y, sb, sb.Capacity);
-                        AppInsights.LogMetric("GetUiXPathPerf", Environment.TickCount - tick);
 
                         if (MouseKeyboardHook.s_bPauseMouseKeyboard == true)
                             continue;

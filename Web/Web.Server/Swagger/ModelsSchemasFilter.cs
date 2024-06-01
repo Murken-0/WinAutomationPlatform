@@ -1,15 +1,14 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using Core.Models;
+using Domain;
 
-namespace Web.Backend.Swagger
+namespace Web.Backend.Swagger;
+
+public class ModelsSchemasFilter : IDocumentFilter
 {
-	public class ModelsSchemasFilter : IDocumentFilter
+	public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
 	{
-		public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
-		{
-			context.SchemaGenerator.GenerateSchema(typeof(Job), context.SchemaRepository);
-			context.SchemaGenerator.GenerateSchema(typeof(Workflow), context.SchemaRepository);		
-		}
+		context.SchemaGenerator.GenerateSchema(typeof(Job), context.SchemaRepository);
+		context.SchemaGenerator.GenerateSchema(typeof(Workflow), context.SchemaRepository);		
 	}
 }

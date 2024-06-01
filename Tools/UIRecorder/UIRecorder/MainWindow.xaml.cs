@@ -57,8 +57,6 @@ namespace WinAppDriverUIRecorder
 			this.treeUiPath.ItemsSource = UiTreeNode.s_uiTreeNodes;
 
 			ConstVariables.InitVk2StringMap();
-
-			AppInsights.LogEvent("Window_Loaded");
 		}
 
 		public static IntPtr RunOnUiThread(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -126,8 +124,6 @@ namespace WinAppDriverUIRecorder
 			s_mainWin = null;
 
 			System.Windows.Interop.HwndSource.FromHwnd(s_windowHandle).RemoveHook(RunOnUiThread);
-
-			AppInsights.LogEvent("Window_Closed");
 		}
 
 		public string RootSessionPath { get; set; }
@@ -149,7 +145,6 @@ namespace WinAppDriverUIRecorder
 				gridTextRecording.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0, 0));
 
 				IsRecording = true;
-				AppInsights.LogEvent("Record");
 			}
 			else
 			{
@@ -162,7 +157,6 @@ namespace WinAppDriverUIRecorder
 				gridTextRecording.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF));
 
 				AddInspectUi(null); // remove last Inspect node
-				AppInsights.LogEvent("Pause");
 			}
 		}
 
@@ -222,8 +216,6 @@ namespace WinAppDriverUIRecorder
 				}
 
 			}
-
-			AppInsights.LogEvent("Recorded UI Count", $"{RecordedUiTask.s_listRecordedUi.Count}");
 		}
 
 		private void btnCopy_Click(object sender, RoutedEventArgs e)
@@ -400,8 +392,6 @@ namespace WinAppDriverUIRecorder
 			tr.Text = "";
 			textBoxCode.Text = "";
 			RootSessionPath = null;
-
-			AppInsights.LogEvent("btnClear_Click");
 		}
 
 		private void btnWinAppDriverCode_Click(object sender, RoutedEventArgs e)
@@ -450,8 +440,6 @@ namespace WinAppDriverUIRecorder
 					timer.Start();
 				}), System.Windows.Threading.DispatcherPriority.ContextIdle);
 			}
-
-			AppInsights.LogEvent("Recorded UI Count", $"{RecordedUiTask.s_listRecordedUi.Count}");
 		}
 
 		private void ResetToolTip(Object source, System.Timers.ElapsedEventArgs e)
@@ -474,8 +462,6 @@ namespace WinAppDriverUIRecorder
 			{
 				Clipboard.SetText(tr.Text);
 			}
-
-			AppInsights.LogEvent("Copy full xpath");
 		}
 
 		private void MenuCopyPathWithoutSessionPath(object sender, RoutedEventArgs e)
@@ -494,8 +480,6 @@ namespace WinAppDriverUIRecorder
 					Clipboard.SetText(tr.Text);
 				}
 			}
-
-			AppInsights.LogEvent("Copy relative xpath");
 		}
 
 		private void MenuClearSessionPath(object sender, RoutedEventArgs e)
@@ -551,8 +535,6 @@ namespace WinAppDriverUIRecorder
 			}
 
 			DeleteRecordedUiTask(uiTask);
-
-			AppInsights.LogEvent("btnDelete_Click");
 		}
 
 		private string RemoveFirstNode(string xpath)
@@ -783,8 +765,6 @@ namespace WinAppDriverUIRecorder
 
 			if (SelectChangedSource != UiSelectChangedSource.ComboBoxSelected)
 				SelectChangedSource = UiSelectChangedSource.SelectChangeFinished;
-
-			AppInsights.LogEvent("treeUiPath_SelectedItemChanged");
 		}
 
 		private void SetSessionRoot_Click(object sender, RoutedEventArgs e)
@@ -810,8 +790,6 @@ namespace WinAppDriverUIRecorder
 			var textRange = new TextRange(pos1, pos2);
 			textRange.ClearAllProperties();
 			textRange.ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.LightGray);
-
-			AppInsights.LogEvent("SetSessionRoot_Click");
 		}
 
 		private TreeViewItem ExpandSelectedTreeNode(UiTreeNode uiTreeNode, TreeViewItem tvi, RecordedUiTask recordedUiTask)
@@ -860,7 +838,6 @@ namespace WinAppDriverUIRecorder
 
 		private void Highlight_Click(object sender, RoutedEventArgs e)
 		{
-			AppInsights.LogEvent("Highlight_Click");
 
 			var selectedItem = treeUiPath.SelectedItem as UiTreeNode;
 			if (selectedItem == null)
@@ -874,8 +851,6 @@ namespace WinAppDriverUIRecorder
 
 		private void EditAttribute_Click(object sender, RoutedEventArgs e)
 		{
-			AppInsights.LogEvent("EditAttribute_Click");
-
 			var uiTreeNode = treeUiPath.SelectedItem as UiTreeNode;
 			if (uiTreeNode == null)
 			{
@@ -958,7 +933,6 @@ namespace WinAppDriverUIRecorder
 
 		private void ComboBoxRecordedUi_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			AppInsights.LogEvent("ComboBoxRecordedUi_PreviewMouseLeftButtonDown");
 		}
     }
 }

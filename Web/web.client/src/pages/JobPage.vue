@@ -3,28 +3,31 @@
 		<h1>Задачи</h1>
 		<div class="tasks__btns">
 			<my-button
-				@click="createTask">
+				@click="showCreateDialog">
 				Создать задачу
 			</my-button>
 
 			<my-select
 				v-model="selectedSort"
 				:options="sortOptions"
+				:label="'Сортировка'"
 			/>
 		</div>
 		<my-dialog
 			v-model:show="editVisible">
-			<task-edit-form @editTask="editTask"/>
+			<task-edit-form :job-prop="selectedJob" @save="editJob"/>
 		</my-dialog>
 		<my-dialog
 			v-model:show="createVisible">
-			<task-create-form @createTask="createTask"/>
+			<task-create-form @createJob="createJob"/>
 		</my-dialog>
 		<task-list
-			v-if="!isTasksLoading"
+			v-if="!isJobsLoading"
 			:jobs="sortedTasks"
 			style="margin-top: 20px"
-			@deleteTask="deleteJob"
+			@delete="deleteJob"
+			@edit="showEditDialog"
+			@execute="executeJob"
 		/>
 		<div v-else>Загружаем</div>
 	</div>
@@ -32,91 +35,80 @@
 
 <script>
 import axios from "axios";
-import TaskList from "@/components/job/JobList.vue";
-import TaskCreateForm from "@/components/job/JobCreateForm.vue";
-import TaskEditForm from "@/components/job/JobEditForm.vue";
+import TaskList from "@/components/models/job/JobList.vue";
+import TaskCreateForm from "@/components/models/job/JobCreateForm.vue";
+import TaskEditForm from "@/components/models/job/JobEditForm.vue";
 
 export default {
 	components: {TaskCreateForm, TaskEditForm, TaskList},
 	data() {
 		return {
-			tasks: [
-				{
-					id: 1,
-					name: 'Сасная',
-					status: 'Завершена',
-					lastExecution: new Date().toLocaleString(),
-					nextExecution: 'Не определено',
-				},
-				{
-					id: 1,
-					name: 'Ласная',
-					status: 'Выполняется',
-					lastExecution: new Date().toLocaleString(),
-					nextExecution: 'Не определено',
-				},
-				{
-					id: 1,
-					name: 'Сасная',
-					status: 'Ошибка',
-					lastExecution: new Date(1).toLocaleString(),
-					nextExecution: 'Не определено',
-				},
-				{
-					id: 1,
-					name: 'Сасная',
-					status: 'Выполняется',
-					lastExecution: new Date(1).toLocaleString(),
-					nextExecution: 'Не определено',
-				}
-			],
+			jobs: [],
 			createVisible: false,
 			editVisible: false,
-			isTasksLoading: false,
+			isJobsLoading: false,
 			selectedSort: '',
 			sortOptions: [
-				{value: "name", name: "по имени"},
-				{value: "status", name: "по статусу"},
-			]
+				{key: "name", label: "Название"},
+				{key: 'workflow.name', label: 'Процесс'},
+				{key: 'cron', label: 'Cron'},
+			],
+			selectedJob: {},
 		}
 	},
 	methods: {
-		showEditDialog() {
+		showEditDialog(job) {
+			this.selectedJob = job;
 			this.editVisible = true;
 		},
 		showCreateDialog() {
 			this.createVisible = true;
 		},
-		async createTask() {
+		async createJob(job) {
 			this.createVisible = false;
-			//await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
-			await this.fetchWorkflows()
+			const jobDto = {
+				name: job.name,
+				workflowId: job.workflowId,
+			}
+			if (job.isRecurring) {
+				jobDto.cron = job.cron;
+			}
+			await axios.post('/api/Jobs/Create', jobDto);
+			await this.fetchJobs()
 		},
-		async editTask(task) {
-			this.createVisible = false;
-			//await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
-			await this.fetchWorkflows()
+		async editJob(job) {
+			this.editVisible = false;
+			const jobDto = {
+				name: job.name,
+				workflowId: job.workflowId,
+			}
+			if (job.isRecurring) {
+				jobDto.cron = job.cron;
+			}
+			await axios.put(`/api/Jobs/Update/${job.id}`, jobDto);
+			await this.fetchJobs()
 		},
-		async deleteJob(task) {
-			//await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
-			await this.fetchWorkflows()
+		async deleteJob(job) {
+			await axios.delete(`/api/Jobs/Delete/${job.id}`);
+			await this.fetchJobs()
 		},
-		async fetchTasks() {
+		async executeJob(job) {
+			await axios.post(`/api/Jobs/Execute/${job.id}`);
+		},
+		async fetchJobs() {
 			try {
-				this.isTasksLoading = true;
-				//const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
-				//this.posts = response.data;
+				this.isJobsLoading = true;
+				const response = await axios.get('/api/Jobs/GetAll');
+				this.jobs = response.data;
 			} catch (e) {
 				alert(`An error occurred: ${e}`);
 			} finally {
-				this.isTasksLoading = false;
-				let updatedSort = this.selectedSort;
-				this.selectedSort = updatedSort;
+				this.isJobsLoading = false;
 			}
 		},
 	},
 	mounted() {
-		this.fetchTasks();
+		this.fetchJobs();
 	},
 	watch: {
 		createVisible(newValue) {
@@ -136,7 +128,7 @@ export default {
 	},
 	computed: {
 		sortedTasks() {
-			return [...this.tasks].sort((a, b) => {
+			return [...this.jobs].sort((a, b) => {
 				return a[this.selectedSort]?.localeCompare(b[this.selectedSort]);
 			});
 		}

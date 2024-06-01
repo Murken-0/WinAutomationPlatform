@@ -5,8 +5,10 @@
 			v-for="job in jobs"
 			:job="job"
 			:key="job.id"
-			@deleteJob="$emit('deleteJob', job)"
-			@editJob="$emit('editJob', job)"/>
+			@delete="deleteF"
+			@edit="edit"
+			@execute="execute"
+		/>
 	</div>
 	<h2
 		v-else
@@ -27,6 +29,17 @@ export default {
 			required: true,
 		}
 	},
+	methods: {
+		deleteF(job) {
+			this.$emit('delete', job)
+		},
+		edit(job) {
+			this.$emit('edit', job)
+		},
+		execute(job) {
+			this.$emit('execute', job)
+		}
+	}
 }
 </script>
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Core.Models;
+using Domain;
 
 namespace Persistense.EntityTypeConfiguration;
 
@@ -19,13 +19,9 @@ public class WorkflowConfiguration : IEntityTypeConfiguration<Workflow>
 			.IsRequired()
 			.HasMaxLength(100);
 
-		builder.Property(w => w.Version)
-			.HasColumnName("version")
-			.ValueGeneratedOnAddOrUpdate();
-
 		builder.Property(w => w.LastEdit)
 			.HasColumnName("last_edit")
-			.ValueGeneratedOnAddOrUpdate();
+			.IsRequired();
 
 		builder.Property(w => w.Script)
 			.HasColumnName("script");

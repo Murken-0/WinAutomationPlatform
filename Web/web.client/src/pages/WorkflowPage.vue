@@ -3,13 +3,14 @@
 		<h1>Рабочие процессы</h1>
 		<div class="workflow__btns">
 			<my-button
-				@click="this.createVisible = true">
+				@click="showCreateForm">
 				Создать рабочий процесс
 			</my-button>
 
 			<my-select
 				v-model="selectedSort"
 				:options="sortOptions"
+				:label="'Сортировка'"
 			/>
 		</div>
 		<my-dialog
@@ -22,7 +23,7 @@
 		</my-dialog>
 		<my-dialog
 			v-model:show="createVisible">
-			<workflow-create-form @createWorkflow="createWorkflow"/>
+			<workflow-create-form @create="createWorkflow"/>
 		</my-dialog>
 		<workflow-list
 			v-if="!isWorkflowsLoading"
@@ -36,9 +37,9 @@
 </template>
 
 <script>
-import WorkflowList from "@/components/workflow/WorkflowList.vue";
-import WorkflowCreateForm from "@/components/workflow/WorkflowCreateForm.vue";
-import WorkflowEditForm from "@/components/workflow/WorkflowEditForm.vue";
+import WorkflowList from "@/components/models/workflow/WorkflowList.vue";
+import WorkflowCreateForm from "@/components/models/workflow/WorkflowCreateForm.vue";
+import WorkflowEditForm from "@/components/models/workflow/WorkflowEditForm.vue";
 import axios from "axios";
 
 export default {
@@ -51,13 +52,16 @@ export default {
 			isWorkflowsLoading: false,
 			selectedSort: '',
 			sortOptions: [
-				{value: "name", name: "Название"},
-				{value: "lastEdit", name: "Дата изменения"},
+				{key: "name", label: "Название"},
+				{key: "lastEdit", label: "Дата изменения"},
 			],
 			selectedWorkflow: {},
 		}
 	},
 	methods: {
+		showCreateForm() {
+			this.createVisible = true;
+		},
 		showEditForm(workflow) {
 			this.selectedWorkflow = workflow;
 			this.editVisible = true;
@@ -72,11 +76,13 @@ export default {
 		},
 		async editWorkflow(workflow) {
 			this.editVisible = false;
-			await axios.put(`/api/Workflows/Update/${workflow.id}`, workflow);
+			await axios.put(`/api/Workflows/Update/${workflow.id}`, {
+				name: workflow.name,
+				script: workflow.script,
+			});
 			await this.fetchWorkflows()
 		},
 		async deleteWorkflow(workflow) {
-			console.log(workflow);
 			await axios.delete(`/api/Workflows/Delete/${workflow.id}`);
 			await this.fetchWorkflows()
 		},

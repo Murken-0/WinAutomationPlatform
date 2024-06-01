@@ -15,6 +15,7 @@
     "@vue-flow/controls": "^1.1.1",
     "@vue-flow/core": "^1.33.6",
     "@vue-flow/minimap": "^1.4.0",
+    "@vue-js-cron/light": "^4.0.3",
     "axios": "^1.6.8",
     "cors": "^2.8.5",
     "monaco-editor": "^0.48.0",

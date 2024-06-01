@@ -1,15 +1,16 @@
 <template>
 	<div class="job">
-		<div>
-			<div><strong>Название: </strong> {{ job.name }}</div>
-			<div><strong>Статус: </strong> {{ job.status }}</div>
-			<br>
-			<div><strong>Последее выполнение: </strong> {{ job.lastExecution }}</div>
-			<div><strong>Следующее выполнение: </strong> {{ job.nextExecution }}</div>
+		<div class="job__info">
+			<div>
+				<div><strong>Название: </strong> {{ job.name }}</div>
+				<div><strong>Процесс: </strong> {{ job.workflow.name }}</div>
+			</div>
+			<div class="job__tag" v-show="job.isRecurring">{{ job.cron }}</div>
 		</div>
 		<div class="job__buttons">
-			<my-button>Edit</my-button>
-			<my-button @click="$emit('deleteJob', job)" style="margin-top: 10px">Delete</my-button>
+			<my-button @click="$emit('execute', job)">Запустить</my-button>
+			<my-button @click="$emit('edit', job)">Редактировать</my-button>
+			<my-button @click="$emit('delete', job)">Удалить</my-button>
 		</div>
 	</div>
 </template>
@@ -24,7 +25,7 @@ export default {
 			type: Object,
 			required: true,
 		}
-	}
+	},
 }
 </script>
 
@@ -41,6 +42,22 @@ export default {
 
 .job__buttons {
 	display: flex;
-	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.job__info {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+.job__tag {
+	padding: 5px;
+	text-align: center;
+	background-color: lightgreen;
+	border-radius: 10px;
+	border: 1px solid teal;
 }
 </style>

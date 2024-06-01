@@ -1,11 +1,12 @@
 <template>
 	<select @change="changeOption" class="sort__select">
-		<option disabled selected value="">Сортировка</option>
+		<option disabled selected value="">{{ label }}</option>
 		<option
 			v-for="option in options"
-			:key="option.value"
-			:value="option.value"
-		>{{ option.name }}</option>/
+			:key="option.key"
+			:value="option.key"
+			:selected="option.key === modelValue"
+		>{{ option.label }}</option>/
 	</select>
 </template>
 
@@ -14,6 +15,9 @@ export default {
 	name: 'my-select',
 	props: {
 		modelValue: {
+			type: String,
+		},
+		label: {
 			type: String,
 		},
 		options: {
@@ -31,7 +35,7 @@ export default {
 
 <style scoped>
 .sort__select {
-	padding: 8px 0px 8px 8px;
+	padding: 8px;
 	border-radius: 5px;
 	border: 2px solid teal;
 }

@@ -57,7 +57,10 @@ export default {
 		},
 		async save() {
 			if (confirm("Сохранить изменения?")) {
-				await axios.put(`/api/Workflows/Update/${this.workflow.id}`, this.workflow);
+				await axios.put(`/api/Workflows/Update/${this.workflow.id}`, {
+					name: this.workflow.name,
+					script: this.workflow.script,
+				});
 				this.$router.push('/workflows');
 			}
 		},
@@ -71,6 +74,7 @@ export default {
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Windows;
 using System;
+using Application.Common.Execution;
 
 public class Script : IScript
 {

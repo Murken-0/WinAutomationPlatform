@@ -2,11 +2,11 @@
 	<div class="workflow">
 		<div>
 			<div><strong>Название: </strong> {{ workflow.name }}</div>
-			<div><strong>Дата изменения: </strong> {{ workflow.lastEdit }}</div>
+			<div><strong>Дата изменения: </strong> {{ new Date(workflow.lastEdit).toLocaleString("ru-RU") }}</div>
 		</div>
 		<div class="workflow__buttons">
-			<my-button @click="$emit('editWorkflow', workflow)">Edit</my-button>
-			<my-button style="margin-left: 10px" @click="$emit('deleteWorkflow', workflow)">Delete</my-button>
+			<my-button @click="$emit('editWorkflow', workflow)">Редактировать</my-button>
+			<my-button @click="$emit('deleteWorkflow', workflow)">Удалить</my-button>
 		</div>
 	</div>
 </template>
@@ -38,5 +38,8 @@ export default {
 
 .workflow__buttons {
 	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
 }
 </style>

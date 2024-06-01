@@ -1,9 +1,10 @@
 ﻿using Hangfire;
 using Microsoft.AspNetCore.Mvc;
-using Core.Models;
-using Core.Common;
+using Domain;
 using Persistense;
 using Microsoft.EntityFrameworkCore;
+using Application.Dto.Jobs;
+using Application.Common.Execution;
 
 namespace Web.Backend.Controllers;
 
@@ -28,40 +29,16 @@ public class JobsController : Controller
 		_configuration = configuration;
 	}
 
-	[HttpPost]
-	public async Task<ActionResult> Execute(int id)
-	{
-		var job = await _context.Jobs.FirstOrDefaultAsync(w => w.Id == id);
-
-		if (job == null)
-		{
-			return NotFound();
-		}
-
-		if (job.IsRecurring)
-		{
-			_recurringJobs.Trigger(job.Name);
-		}
-		else
-		{
-			_backgroundJobs.Enqueue<ScriptExecutor>(executor => executor.Execute(
-				_context.Workflows.First(w => w.Id == job.WorkflowId).Script,
-				_configuration.GetConnectionString("WinAppDriver")));
-		}
-
-		return Ok();
-	}
-
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<Job>>> GetAll()
 	{
-		return await _context.Jobs.ToListAsync();
+		return await _context.Jobs.Include(j => j.Workflow).ToListAsync();
 	}
 
 	[HttpGet("{id}")]
 	public async Task<ActionResult<Job>> Get(int id)
 	{
-		var job = await _context.Jobs.FirstOrDefaultAsync(j => j.Id == id);
+		var job = await _context.Jobs.Include(j => j.Workflow).FirstOrDefaultAsync(j => j.Id == id);
 
 		if (job == null)
 		{
@@ -72,15 +49,22 @@ public class JobsController : Controller
 	}
 
 	[HttpPost]
-	public async Task<ActionResult> Create(Job job)
+	public async Task<ActionResult> Create(JobDto dto)
 	{
+		var job = new Job()
+		{
+			Name = dto.Name,
+			Cron = dto.Cron,
+			WorkflowId = dto.WorkflowId,
+		};
+
 		_context.Jobs.Add(job);
 		await _context.SaveChangesAsync();
 
 		if (job.IsRecurring)
 		{
 			_recurringJobs.AddOrUpdate<ScriptExecutor>(
-				job.Name,
+				job.Id.ToString(),
 				executor =>
 					executor.Execute(
 					   _context.Workflows.First(w => w.Id == job.WorkflowId).Script,
@@ -92,41 +76,34 @@ public class JobsController : Controller
 	}
 
 	[HttpPut("{id}")]
-	public async Task<IActionResult> Update(int id, Job job)
+	public async Task<IActionResult> Update(int id, JobDto dto)
 	{
-		if (id != job.Id)
-		{
-			return NotFound();
-		}
+		var job = await _context.Jobs.Include(j => j.Workflow).FirstOrDefaultAsync(j => j.Id == id);
+		
+		if (job == null) return NotFound();
 
-		try
-		{
-			_context.Update(job);
-			await _context.SaveChangesAsync();
+		job.Name = dto.Name;
+		job.Cron = dto.Cron;
+		job.WorkflowId = dto.WorkflowId;
 
-			if (job.IsRecurring)
-			{
-				_recurringJobs.AddOrUpdate<ScriptExecutor>(
-					job.Name,
-					executor =>
-						executor.Execute(
-						   _context.Workflows.First(w => w.Id == job.WorkflowId).Script,
-						   _configuration.GetConnectionString("WinAppDriver")),
-					job.Cron);
-			}
-		}
-		catch (DbUpdateConcurrencyException)
-		{
-			if (!await JobExists(job.Id))
-			{
-				return NotFound();
-			}
-			else
-			{
-				throw;
-			}
-		}
+		_context.Update(job);
+		await _context.SaveChangesAsync();
 
+		if (job.IsRecurring)
+		{
+			_recurringJobs.AddOrUpdate<ScriptExecutor>(
+				job.Id.ToString(),
+				executor =>
+					executor.Execute(
+						job.Workflow.Script,
+						_configuration.GetConnectionString("WinAppDriver")),
+				job.Cron);
+		}
+		else
+		{
+			_recurringJobs.RemoveIfExists(job.Name);
+		}
+		
 		return Ok();
 	}
 
@@ -136,24 +113,37 @@ public class JobsController : Controller
 	{
 		var job = await _context.Jobs.FirstOrDefaultAsync(w => w.Id == id);
 
-		if (job == null)
-		{
-			return NotFound();
-		}
+		if (job == null) return NotFound();
 
 		_context.Jobs.Remove(job);
 		await _context.SaveChangesAsync();
 
 		if (job.IsRecurring)
 		{
-			_recurringJobs.RemoveIfExists(job.Name);
+			_recurringJobs.RemoveIfExists(job.Id.ToString());
 		}
 
 		return Ok();
 	}
 
-	private async Task<bool> JobExists(int id)
+	[HttpPost("{id}")]
+	public async Task<ActionResult> Execute(int id)
 	{
-		return await _context.Jobs.AnyAsync(e => e.Id == id);
+		var job = await _context.Jobs.Include(j => j.Workflow).FirstOrDefaultAsync(w => w.Id == id);
+
+		if (job == null) return NotFound();
+
+		if (job.IsRecurring)
+		{
+			_recurringJobs.Trigger(job.Id.ToString());
+		}
+		else
+		{
+			_backgroundJobs.Enqueue<ScriptExecutor>(executor => executor.Execute(
+				job.Workflow.Script,
+				_configuration.GetConnectionString("WinAppDriver")));
+		}
+
+		return Ok();
 	}
 }

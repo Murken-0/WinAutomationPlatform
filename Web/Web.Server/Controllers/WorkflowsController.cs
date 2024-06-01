@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistense;
-using Core.Models;
+using Domain;
+using Application.Dto.Workflows;
 
 namespace Web.Backend.Controllers;
 
@@ -36,44 +37,39 @@ public class WorkflowsController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<ActionResult<Workflow>> Create(Workflow workflow)
+	public async Task<ActionResult<Workflow>> Create(WorkflowCreateDto dto)
 	{
+		var workflow = new Workflow()
+		{
+			Name = dto.Name,
+			LastEdit = DateTime.UtcNow,
+		};
+
 		_context.Workflows.Add(workflow);
 		await _context.SaveChangesAsync();
 
-		return CreatedAtAction(nameof(Get), new { id = workflow.Id }, workflow);
+		return Ok();
 	}
 
 	[HttpPut("{id}")]
-	public async Task<IActionResult> Update(int id, Workflow workflow)
+	public async Task<ActionResult> Update(int id, WorkflowUpdateDto dto)
 	{
-		if (id != workflow.Id)
-		{
-			return NotFound();
-		}
+		var workflow = await _context.Workflows.FirstOrDefaultAsync(w => w.Id == id);
 
-		try
-		{
-			_context.Update(workflow);
-			await _context.SaveChangesAsync();
-		}
-		catch (DbUpdateConcurrencyException)
-		{
-			if (!await WorkflowExists(workflow.Id))
-			{
-				return NotFound();
-			}
-			else
-			{
-				throw;
-			}
-		}
+		if (workflow.Name != dto.Name || workflow.Script != dto.Script) 
+			workflow.LastEdit = DateTime.UtcNow;
+		
+		workflow.Script = dto.Script;
+		workflow.Name = dto.Name;
+
+		_context.Update(workflow);
+		await _context.SaveChangesAsync();
 
 		return Ok();
 	}
 
 	[HttpDelete("{id}")]
-	public async Task<IActionResult> Delete(int id)
+	public async Task<ActionResult> Delete(int id)
 	{
 		var workflow = await _context.Workflows.FirstOrDefaultAsync(w => w.Id == id);
 

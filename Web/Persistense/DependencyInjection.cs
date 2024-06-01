@@ -2,19 +2,18 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
-namespace Persistense
+namespace Persistense;
+
+public static class DependencyInjection
 {
-	public static class DependencyInjection
+	public static IServiceCollection AddPersistense(this IServiceCollection services,
+		IConfiguration configuration)
 	{
-		public static IServiceCollection AddPersistense(this IServiceCollection services,
-			IConfiguration configuration)
+		var connectionString = configuration.GetConnectionString("DefaultConnection");
+		services.AddDbContext<DatabaseContext>(options =>
 		{
-			var connectionString = configuration.GetConnectionString("DefaultConnection");
-			services.AddDbContext<DatabaseContext>(options =>
-			{
-				options.UseNpgsql(connectionString);
-			});
-			return services;
-		}
+			options.UseNpgsql(connectionString);
+		});
+		return services;
 	}
 }

@@ -166,9 +166,8 @@ namespace WinAppDriverUIRecorder
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    AppInsights.LogException("Description", ex.Message);
                 }
 
                 if (string.IsNullOrEmpty(this._strDescription))

@@ -23,26 +23,15 @@ export default {
 		return {
 			workflow: {
 				name: '',
-				lastEdit: '',
-				version: '',
-				scheme: ''
 			}
 		}
 	},
 	methods: {
 		createWorkflow() {
-			this.workflow.lastEdit = new Date(Date.now()).toISOString();
-			this.workflow.version = 0;
 			this.$emit('createWorkflow', this.workflow)
 			this.workflow = {
 				name: '',
-				lastEdit: '',
-				version: '',
-				scheme: '',
 			}
-		},
-		openStudio() {
-			this.$emit('openStudio', this.workflow)
 		},
 	},
 }

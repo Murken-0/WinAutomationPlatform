@@ -16,7 +16,7 @@
 	</h2>
 </template>
 <script>
-import WorkflowItem from "@/components/workflow/WorkflowItem.vue";
+import WorkflowItem from "@/components/models/workflow/WorkflowItem.vue";
 
 export default {
 	components: {WorkflowItem},

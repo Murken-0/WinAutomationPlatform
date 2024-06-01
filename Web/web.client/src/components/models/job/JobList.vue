@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import JobItem from "@/components/job/JobItem.vue";
+import JobItem from "@/components/models/job/JobItem.vue";
 
 export default {
 	components: {JobItem},

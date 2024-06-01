@@ -35,18 +35,10 @@ export default {
 	},
 	methods: {
 		save() {
-			if (JSON.stringify(this.workflow) !== JSON.stringify(this.wf)) {
-				this.workflow.lastEdit = new Date(Date.now()).toISOString();
-				this.workflow.version += 1;
-			}
 			this.$emit('save', this.workflow)
 			this.workflow = {};
 		},
 		changeScript() {
-			if (JSON.stringify(this.workflow) === JSON.stringify(this.wf)) {
-				this.workflow.lastEdit = new Date(Date.now()).toISOString();
-				this.workflow.version += 1;
-			}
 			this.$emit('changeScript', this.workflow);
 			this.workflow = {};
 		}

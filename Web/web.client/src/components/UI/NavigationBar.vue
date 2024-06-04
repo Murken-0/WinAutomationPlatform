@@ -13,6 +13,7 @@
 	</div>
 </template>
 
+
 <script>
 import MyButton from "@/components/UI/MyButton.vue";
 

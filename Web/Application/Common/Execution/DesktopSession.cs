@@ -33,9 +33,8 @@ public class DesktopSession : IDisposable
             {
                 uiTarget = _session.FindElementByXPath(xPath);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
             }
 
             if (uiTarget != null)

@@ -206,9 +206,9 @@ namespace WinAppDriverUIRecorder
         public string GetCSCode(string focusedElemName)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("// " + this.Description);
+            sb.AppendLine("\t\t// " + this.Description);
 
-            string consoleWriteLine = "Console.WriteLine(\"" + this.Description.Replace("\"", "\\\"") + "\");";
+            string consoleWriteLine = "\t\tConsole.WriteLine(\"" + this.Description.Replace("\"", "\\\"") + "\");";
             sb.AppendLine(consoleWriteLine);
 
             if (this.UiTaskName == EnumUiTaskName.LeftClick)
@@ -264,17 +264,17 @@ namespace WinAppDriverUIRecorder
             var xpath = "xpath_" + elemName;
             elemName = "winElem_" + elemName;
 
-            string codeBlock = $"string {xpath} = {uiTask.GetXPath(true)};\n" +
-                $"var {elemName} = desktopSession.FindElementByAbsoluteXPath({xpath});\n" +
-                $"if ({elemName} != null)\n" +
-                "{\n" +
-                "CODEBLOCK" +
-                "}\n" +
-                "else\n" +
-                "{\n" +
-                "    Console.WriteLine(\"Failed to find element using xpath: \" + " + $"{xpath}" + ");\n" +
-                "    return;\n" +
-                "}\n";
+            string codeBlock = $"\t\tstring {xpath} = {uiTask.GetXPath(true)};\n" +
+                $"\t\tvar {elemName} = desktopSession.FindElementByAbsoluteXPath({xpath});\n" +
+                $"\t\tif ({elemName} != null)\n" +
+				"\t\t{\n" +
+				"\t\tCODEBLOCK" +
+				"\t\t}\n" +
+				"\t\telse\n" +
+				"\t\t{\n" +
+				"\t\t    Console.WriteLine(\"Failed to find element using xpath: \" + " + $"{xpath}" + ");\n" +
+				"\t\t    return;\n" +
+				"\t\t}\n";
 
             return codeBlock.Replace("CODEBLOCK", uiActionLine);
         }
@@ -405,10 +405,10 @@ namespace WinAppDriverUIRecorder
 
             focusedElemeName = "winElem_" + focusedElemeName;
 
-            sb.AppendLine($"System.Threading.Thread.Sleep(100);");
+            sb.AppendLine($"\t\tSystem.Threading.Thread.Sleep(100);");
             foreach (string line in lines)
             {
-                sb.AppendLine($"{focusedElemeName}.SendKeys({line});");
+                sb.AppendLine($"\t\t{focusedElemeName}.SendKeys({line});");
             }
 
             return sb.ToString();

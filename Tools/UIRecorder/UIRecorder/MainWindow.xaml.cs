@@ -164,6 +164,19 @@ namespace WinAppDriverUIRecorder
 		{
 			StringBuilder sb = new StringBuilder();
 
+			var begining = @"using OpenQA.Selenium;
+using OpenQA.Selenium.Appium;
+using OpenQA.Selenium.Appium.Windows;
+using Application.Common.Execution;
+using Application.Interfaces;
+using System;
+
+public class Test : IScript
+{
+	public void Perform(DesktopSession desktopSession)
+	{";
+			sb.AppendLine(begining);
+
 			lock (RecordedUiTask.s_lockRecordedUi)
 			{
 				if (RecordedUiTask.s_listRecordedUi.Count == 0)
@@ -192,12 +205,14 @@ namespace WinAppDriverUIRecorder
 				}
 			}
 
+			sb.AppendLine("    }\r\n}");
+
 			if (sb.Length > 0)
 			{
 				SaveFileDialog dialog = new SaveFileDialog();
 				dialog.FileName = "Script";
-				dialog.DefaultExt = ".txt";
-				dialog.Filter = "Text documents (.txt)|*.txt";
+				dialog.DefaultExt = ".cs";
+				dialog.Filter = "CSharp files (.cs)|*.cs";
 
 				Nullable<bool> result = dialog.ShowDialog();
 				if (result == true)
@@ -214,7 +229,6 @@ namespace WinAppDriverUIRecorder
 						timer.Start();
 					}), System.Windows.Threading.DispatcherPriority.ContextIdle);
 				}
-
 			}
 		}
 

@@ -1,6 +1,5 @@
 <template>
-	<div v-if="jobs.length > 0">
-		<h3>Список задач</h3>
+  <div class="job-list" v-if="jobs.length > 0">
 		<job-item
 			v-for="job in jobs"
 			:job="job"
@@ -44,5 +43,25 @@ export default {
 </script>
 
 <style scoped>
+h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+  user-select: none
+}
 
+h2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #dc3545;
+  user-select: none
+}
+
+.job-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 </style>

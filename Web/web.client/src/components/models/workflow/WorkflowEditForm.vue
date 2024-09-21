@@ -57,18 +57,26 @@ export default {
 
 <style scoped>
 form {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-.form__input {
-	margin-top: 10px;
+h4 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
 }
 
 .form__btns {
-	display: flex;
-	justify-content: space-between;
-	margin-top: 15px;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  justify-content: space-between;
+}
+
+.form__input {
+  margin-top: 10px;
 }
 
 </style>

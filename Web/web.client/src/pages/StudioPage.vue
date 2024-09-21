@@ -100,6 +100,34 @@ public class Script : IScript
 
 <style scoped>
 .editor__container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+.editor__buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-bottom: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.editor {
+  margin-top: 0 !important;
+  height: 100%;
+  border-bottom: 1px solid #ddd !important;
+}
+</style>
+
+
+<style scoped>
+.editor__container {
 	width: 100%;
 	height: calc(100vh - 150px);
 }

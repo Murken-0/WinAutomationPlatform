@@ -3,8 +3,7 @@
 		<div
 			class="navbar__brand"
 			@click="$router.push('/workflows')">
-			<div><strong>Платформа</strong></div>
-			<div><strong>роботизации</strong></div>
+			<div><strong>Платформа роботизации</strong></div>
 		</div>
 		<div class="navbar__btns">
 			<my-button style="margin-left: 15px" @click="$router.push('/workflows/')">Процессы</my-button>
@@ -24,28 +23,28 @@ export default {
 </script>
 
 <style scoped>
+
 .navbar {
-	height: 70px;
-	background-color: lightgray;
-	box-shadow: 0 1px 3px gray;
-	display: flex;
-	align-items: center;
-	padding: 0 20px;
+  height: 60px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
 }
 
 .navbar__brand {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	font-size: 20px;
-	border: 2px solid teal;
-	border-radius: 5px;
-	padding: 3px 10px;
-	cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
 }
 
 .navbar__btns {
-	margin-left: auto;
+  margin-left: auto;
 }
 
 </style>

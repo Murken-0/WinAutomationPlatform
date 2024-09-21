@@ -29,7 +29,7 @@
 					/>
 					<label for="recurring">Повторяющаяся</label>
 				</div>
-				<div class="cron" v-if="job.isRecurring">{{ job.cron }}</div>
+				<div class="cron" v-show="job.isRecurring">{{ job.cron }}</div>
 			</div>
 			<my-button
 				@click="save"
@@ -102,51 +102,60 @@ export default {
 
 <style scoped>
 form {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-	min-width: 775px
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+h4 {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  color: #333; /* Цвет заголовка */
 }
 
 .form__btns {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .form__btns__recurring {
-	display: flex;
-	align-items: center;
-	gap: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .form__checker {
-	padding: 8px;
-	display: flex;
-	align-items: center;
-	gap: 5px;
-	border: 2px solid teal;
-	border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px;
+  border: 1px solid #ddd; /*  Тонкая рамка */
+  border-radius: 5px;
+  background-color: #fff; /*  Белый фон */
 }
 
 .form__cron {
-	padding: 8px;
-	border: 2px solid teal;
-	border-radius: 5px;
+  padding: 8px;
+  border: 1px solid #ddd; /*  Тонкая рамка */
+  border-radius: 5px;
+  background-color: #fff; /*  Белый фон */
+  min-width: 350px;
 }
 
 .inactive {
-	opacity: 0.4;
-	border: 2px solid black;
-	pointer-events: none;
+  opacity: 0.4;
+  border: 1px solid #ddd; /*  Тонкая рамка */
+  pointer-events: none;
 }
 
 .cron {
-	padding: 0 10px;
-	text-align: center;
-	background-color: lightgreen;
-	border-radius: 10px;
-	border: 1px solid teal;
+  padding: 0 10px;
+  text-align: center;
+  background-color: #e0ffe3; /*  Светло-зеленый фон */
+  border-radius: 10px;
+  border: 1px solid #ddd; /*  Тонкая рамка */
 }
-
 </style>

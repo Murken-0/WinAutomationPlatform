@@ -35,8 +35,14 @@ export default {
 
 <style scoped>
 .sort__select {
-	padding: 8px;
-	border-radius: 5px;
-	border: 2px solid teal;
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  color: #333;
+  user-select: none;
+  cursor: pointer;
 }
 </style>
+

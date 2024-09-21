@@ -18,9 +18,22 @@ export default {
 
 <style scoped>
 .input {
-	width: 100%;
-	border: 2px solid teal;
-	border-radius: 5px;
-	padding: 10px 15px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 8px 15px;
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+}
+
+.input::placeholder {
+  color: #aaa;
+}
+
+.input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #007bff;
+  transition: box-shadow 0.2s ease;
 }
 </style>

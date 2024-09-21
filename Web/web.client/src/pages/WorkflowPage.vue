@@ -4,7 +4,7 @@
 		<div class="workflow__btns">
 			<my-button
 				@click="showCreateForm">
-				Создать рабочий процесс
+				Создать
 			</my-button>
 
 			<my-select
@@ -53,7 +53,7 @@ export default {
 			selectedSort: '',
 			sortOptions: [
 				{key: "name", label: "Название"},
-				{key: "lastEdit", label: "Дата изменения"},
+				{key: "lastEdit", label: "Дата"},
 			],
 			selectedWorkflow: {},
 		}
@@ -130,8 +130,17 @@ export default {
 
 <style scoped>
 .workflow__btns {
-	margin: 15px 0;
-	display: flex;
-	justify-content: space-between;
+  margin: 15px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+  user-select: none
 }
 </style>

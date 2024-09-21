@@ -138,8 +138,24 @@ export default {
 
 <style scoped>
 .tasks__btns {
-	margin: 15px 0;
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.tasks__btns > * {
+  margin-right: 15px;
+}
+
+.tasks__btns > *:last-child {
+  margin-right: 0;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
 }
 </style>

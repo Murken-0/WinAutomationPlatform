@@ -9,14 +9,14 @@ The platform consists of 3 main components:
 - Backend part (ASP.NET Core)
 - Frontend part (VueJS)
 
-### Recorder Tool
-![image](https://github.com/user-attachments/assets/b7bc4d0f-2f99-430d-bea5-28fc898eba19)
-
 ### Backend
 ![image](https://github.com/user-attachments/assets/5cecf0b8-49c2-4dd8-93b4-c4a680d1e65a)
 
 ### Fronend
 ![image](https://github.com/user-attachments/assets/78d9b9db-1fb1-4280-80fd-6562ebf0c379)
+
+### Recorder Tool
+![image](https://github.com/user-attachments/assets/b7bc4d0f-2f99-430d-bea5-28fc898eba19)
 
 
 

@@ -8,3 +8,14 @@ The platform consists of 3 main components:
 - Recorder Tool (WPF, C++)
 - Backend part (ASP.NET Core)
 - Frontend part (VueJS)
+
+### Recorder Tool
+![image](https://github.com/user-attachments/assets/b7bc4d0f-2f99-430d-bea5-28fc898eba19)
+
+### Backend
+![image](https://github.com/user-attachments/assets/5cecf0b8-49c2-4dd8-93b4-c4a680d1e65a)
+
+### Fronend
+![image](https://github.com/user-attachments/assets/39235124-717c-4687-a240-f38f409b81bb)
+
+

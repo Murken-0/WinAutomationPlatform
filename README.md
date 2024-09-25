@@ -16,6 +16,7 @@ The platform consists of 3 main components:
 ![image](https://github.com/user-attachments/assets/5cecf0b8-49c2-4dd8-93b4-c4a680d1e65a)
 
 ### Fronend
-![image](https://github.com/user-attachments/assets/39235124-717c-4687-a240-f38f409b81bb)
+![image](https://github.com/user-attachments/assets/78d9b9db-1fb1-4280-80fd-6562ebf0c379)
+
 
 
